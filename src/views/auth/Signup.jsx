@@ -9,6 +9,8 @@ function Signup() {
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
   const [message, setMessage] = useState(null);
+  const [errors, setErrors] = useState(null)
+
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -31,19 +33,20 @@ function Signup() {
       .catch((err) => {
         const response = err.response;
         if (response && response.status === 422) {
-          setMessage(response.data.message);
+          setErrors(response.data.errors)
         }
       });
   };
 
   return (
     <div className="grid grid-cols-1">
-      {message && (
-        <div class="font-regular relative mb-4 block w-full rounded-lg bg-gradient-to-tr from-red-600 to-red-400 p-4 text-base leading-5 text-white opacity-100">
-          <i class="fas fa-exclamation mr-2"></i>
-          {message}
-        </div>
-      )}
+          {errors &&
+            <div className="alert">
+              {Object.keys(errors).map(key => (
+                <p key={key}>{errors[key][0]}</p>
+              ))}
+            </div>
+          }
 
       <form
         className="w-[439px] h-auto p-6 bg-white rounded-lg shadow flex-col justify-center items-center gap-6 inline-flex"

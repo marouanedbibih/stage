@@ -1,8 +1,11 @@
 import React from "react";
+import { useStateContext } from "../contexts/ContextProvider";
+import Sidebar from "../components/Sidebar/Sidebar";
+import Navbar from "../components/Navbar/Navbar";
+import { Navigate, Outlet } from "react-router-dom";
 
 function UsersLayout() {
-  const { user, token, role, setUser, _setToken, _setRole, notification } =
-    useStateContext();
+  const { user, token, role, setUser, _setToken, _setRole, notification } = useStateContext();
   const roleInt = parseInt(role);
   if (!token || roleInt !== 2) {
     return <Navigate to="/login" />;

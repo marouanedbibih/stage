@@ -9,6 +9,7 @@ function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [message, setMessage] = useState(null);
+  const [errors, setErrors] = useState(null);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -29,17 +30,31 @@ function Login() {
       .catch((err) => {
         const response = err.response;
         if (response && response.status === 422) {
-          setMessage(response.data.message);
+          setErrors(response.data.errors);
+          if (!response.data.errors) {
+            setMessage(response.data.message);
+          }
+
+          setTimeout(() => {
+            setErrors(null);
+            setMessage(null);
+          }, 5000);
         }
       });
   };
 
   return (
     <div className="grid grid-cols-1">
+      {errors && (
+        <div className="alert">
+          {Object.keys(errors).map((key) => (
+            <p key={key}>{errors[key][0]}</p>
+          ))}
+        </div>
+      )}
       {message && (
-        <div class="font-regular relative mb-4 block w-full rounded-lg bg-gradient-to-tr from-red-600 to-red-400 p-4 text-base leading-5 text-white opacity-100">
-          <i class="fas fa-exclamation mr-2"></i>
-          {message}
+        <div className="alert">
+            <p >{message}</p>
         </div>
       )}
 
