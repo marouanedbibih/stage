@@ -11,7 +11,7 @@ class Section extends Model
 
     protected $fillable = [
         'name',
-        'section',
+        'description',
         'cover_image',
     ];
 

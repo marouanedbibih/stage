@@ -76,6 +76,7 @@ class UserController extends Controller
         }
     
         $userInfo = [
+            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
@@ -110,7 +111,7 @@ class UserController extends Controller
                 $this->imageController->removeImage($user->image);
             }
         }else{
-            $data['image'] = "images/users/default-profile.png";
+            $data['image'] = $user->image;
         }
     
         /** @var \App\Models\User $user */
@@ -137,4 +138,34 @@ class UserController extends Controller
             "message" => "user delete succufuly"
         ], 204);
     }
+
+    public function searchUsers(Request $request)
+{
+    $searchTerm = $request->input('searchTerm');
+
+    $users = DB::table('users')
+        ->leftJoin('sections', 'users.section_id', '=', 'sections.id')
+        ->select(
+            'users.id',
+            'users.name',
+            'users.email',
+            'users.role',
+            'users.created_at',
+            'sections.name as section_name',
+            'sections.id as section_id'
+        )
+        ->where(function ($query) use ($searchTerm) {
+            $query->where('users.name', 'like', "%$searchTerm%")
+                ->orWhere('users.email', 'like', "%$searchTerm%")
+                ->orWhere('sections.name', 'like', "%$searchTerm%");
+        })
+        ->orderBy('users.id', 'desc')
+        ->paginate(7);
+
+    return response()->json([
+        'message' => 'Users retrieved successfully',
+        'users' => UserResource::collection($users),
+    ], 200);
+}
+
 }
