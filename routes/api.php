@@ -31,3 +31,6 @@ Route::get('/users/search', [UserController::class, 'searchUsers']);
 Route::post('/signup',[AuthController::class,'signup']);
 Route::post('/login',[AuthController::class,'login']);
 
+Route::get('/getSectionsWithResponsables',[SectionController::class,'getSectionsWithResponsables']);
+Route::get('/getSectionsForMenu',[SectionController::class,'getSectionsForMenu']);
+

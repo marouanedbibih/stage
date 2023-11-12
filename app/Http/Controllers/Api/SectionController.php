@@ -61,7 +61,7 @@ class SectionController extends Controller
     {
         $data = $request->validated();
         if (isset($data['cover_image'])) {
-            $relativePath = $this->imageController->uploadImage($data['image'], 'images/sections/', '-section');
+            $relativePath = $this->imageController->uploadImage($data['cover_image'], 'images/sections/', '-section');
             $data['cover_image'] = $relativePath;
         }else{
             $data['cover_image'] = "images/sections/cover-default.jpg";
@@ -128,4 +128,32 @@ class SectionController extends Controller
             "message" => "section delete succufuly"
         ], 204);
     }
+
+    public function getSectionsWithResponsables(){
+        try {
+            // Retrieve sections with their responsible user where user role is 1
+            $sections = Section::with(['user' => function ($query) {
+                $query->where('role', 1);
+            }])->get();
+    
+            return response()->json([
+                'message' => 'Sections retrieved successfully',
+                'sections' => $sections,
+            ], 200);
+        } catch (\Exception $e) {
+            // Handle exceptions if any
+            return response()->json([
+                'message' => 'Failed to retrieve sections',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    
+    
+    
+    
+    
+
 }
