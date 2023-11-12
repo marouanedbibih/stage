@@ -8,6 +8,7 @@ use App\Http\Requests\Section\StoreSectionRequest;
 use App\Http\Requests\Section\UpdateSectionRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\Section;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
@@ -144,6 +145,29 @@ class SectionController extends Controller
             // Handle exceptions if any
             return response()->json([
                 'message' => 'Failed to retrieve sections',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function getResponsablesForSection(Section $section)
+    {
+        try {
+            // Retrieve users with roles 1 or 2 assigned to the specific section
+            $responsables = User::where(function ($query) {
+                    $query->where('role', 1)
+                        ->orWhere('role', 2);
+                })
+                ->where('section_id', $section->id)
+                ->get();
+
+            return response()->json([
+                'message' => 'Responsables retrieved successfully',
+                'responsables' => $responsables,
+            ], 200);
+        } catch (\Exception $e) {
+            // Handle exceptions if any
+            return response()->json([
+                'message' => 'Failed to retrieve responsables',
                 'error' => $e->getMessage(),
             ], 500);
         }

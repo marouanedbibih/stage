@@ -33,4 +33,6 @@ Route::post('/login',[AuthController::class,'login']);
 
 Route::get('/getSectionsWithResponsables',[SectionController::class,'getSectionsWithResponsables']);
 Route::get('/getSectionsForMenu',[SectionController::class,'getSectionsForMenu']);
+Route::get('/sections/{section}/responsables', [SectionController::class, 'getResponsablesForSection']);
+
 
