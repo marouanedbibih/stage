@@ -73,7 +73,7 @@ function SectionCard({ section, onDeleteClick }) {
         </div>
         <div className="flex space-x-2">
           <Link
-            to={`/section/${id}`} // Replace with the correct route for viewing a section
+            to={`/sections/${id}`} // Replace with the correct route for viewing a section
             className="whitespace-normal break-words rounded-lg bg-gray-800 hover:bg-gray-700 active:bg-gray-900 py-1.5 px-3 font-['Roboto'] text-sm text-white focus:outline-none"
           >
             View
