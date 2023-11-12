@@ -9,6 +9,10 @@ import Signup from "../views/auth/Signup";
 import User from "../views/users/User";
 import UserForm from "../views/users/UserForm";
 import UserShow from "../views/users/UserShow";
+import SectionLayout from "../layouts/SectionLayout";
+import Section from "../views/sections/Section";
+import SectionForm from "../views/sections/SectionForm";
+import SectionShow from "../views/sections/SectionShow";
 
 
 const routes = createBrowserRouter([
@@ -35,6 +39,32 @@ const routes = createBrowserRouter([
       {
         path: "/users/:id",
         element: <UserShow />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <SectionLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Navigate to="/sections" />,
+      },
+      {
+        path: "/sections",
+        element: <Section />,
+      },
+      {
+        path: "/sections/create",
+        element: <SectionForm key="sectionCreate" />,
+      },
+      {
+        path: "/sections/update/:id",
+        element: <SectionForm key="sectionUpdate" />,
+      },
+      {
+        path: "/sections/:id",
+        element: <SectionShow />,
       },
     ],
   },
