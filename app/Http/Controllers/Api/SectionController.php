@@ -131,9 +131,9 @@ class SectionController extends Controller
 
     public function getSectionsWithResponsables(){
         try {
-            // Retrieve sections with their responsible user where user role is 1
+            // Retrieve sections with their responsible user where user role is 1 or 2
             $sections = Section::with(['user' => function ($query) {
-                $query->where('role', 1);
+                $query->whereIn('role', [1, 2]); // Include both roles 1 and 2
             }])->get();
     
             return response()->json([
@@ -148,6 +148,7 @@ class SectionController extends Controller
             ], 500);
         }
     }
+    
 
 
     
