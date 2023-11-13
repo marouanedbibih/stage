@@ -49,4 +49,15 @@ class User extends Authenticatable
     public function section(){
         return $this->belongsTo(Section::class);
     }
+
+    public function post(){
+        return $this->hasMany(Post::class);
+    }
+    public function like(){
+        return $this->hasMany(Like::class);
+    }
+
+    public function comment(){
+        return $this->hasMany(Comment::class);
+    }
 }

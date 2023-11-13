@@ -168,4 +168,13 @@ class UserController extends Controller
     ], 200);
 }
 
+public function getPostsUser(User $user)
+{
+    // Fetch posts for the user in descending order by created_at timestamp
+    $posts = $user->post()->orderBy('created_at', 'desc')->get();
+
+    return response(['posts' => $posts], 200);
+}
+
+
 }
