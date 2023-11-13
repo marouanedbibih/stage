@@ -10,37 +10,37 @@ function Sidebar() {
   const location = useLocation();
   const { role } = useStateContext();
   const roleInt = parseInt(role);
+  const { user } = useStateContext();
 
   const isActive = (route) => {
     return location.pathname === route ? "bg-zinc-300 bg-opacity-50" : "";
   };
 
   return (
-    <aside className="w-60 bg-gray-800 px-4 h-screen fixed z-10">
+    <aside className="w-60 bg-gray-800 px-4 h-screen fixed z-20">
       <div className="h-20 flex items-center">
         <div className="text-white text-lg font-bold font-['Roboto'] leading-normal">
           Dashboard
         </div>
       </div>
-
+      <MenuLink
+        route={`/portfolio/${user.id}`}
+        label="Portfolio"
+        icon={<BiUser color="white" />}
+        top_vl="40px"
+      />
+      <MenuLink
+        route="/sections"
+        label="Sections"
+        icon={<GoOrganization color="white" />}
+        top_vl="40px"
+      />
       {roleInt === 2 && (
         <div>
-          <MenuLink
-            route="/portfolio"
-            label="Portfolio"
-            icon={<BiUser color="white" />}
-            top_vl="40px"
-          />
           <MenuLink
             route="/users"
             label="Users"
             icon={<FiUsers color="white" />}
-            top_vl="40px"
-          />
-          <MenuLink
-            route="/sections"
-            label="Sections"
-            icon={<GoOrganization color="white" />}
             top_vl="40px"
           />
         </div>

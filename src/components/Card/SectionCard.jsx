@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import defaultCoverImage from "../../../public/images/cover.webp";
 import defaultProfile1 from "../../../public/images/profile-1.jpg";
-import defaultProfile2 from "../../../public/images/profile-2.jpg";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 function SectionCard({ section, onDeleteClick }) {
   const {
@@ -10,37 +10,19 @@ function SectionCard({ section, onDeleteClick }) {
     name,
     description,
     cover_image: coverImage = defaultCoverImage,
-    user = [],
+    users = [],
   } = section;
+  const { user, role } = useStateContext();
 
   const renderProfileImages = () => {
-    console.log('Users',user)
-    // if (user.length === 0) {
-    //   // Return default profile images if users data is not available
-    //   return (
-    //     <>
-    //       <img
-    //         alt="Default Profile 1"
-    //         src={defaultProfile1}
-    //         className="inline-block object-cover object-center border-2 border-white rounded-full h-9 w-9 hover:z-10"
-    //       />
-    //       {/* <img
-    //         alt="Default Profile 2"
-    //         src={defaultProfile2}
-    //         className="inline-block object-cover object-center border-2 border-white rounded-full h-9 w-9 hover:z-10"
-    //       /> */}
-    //     </>
-    //   );
-    // }
-    return user
+    return users
       .slice(0, 2)
       .map((u) => (
         <img
           key={u.id}
           alt={u.name}
           src={
-            `${import.meta.env.VITE_API_BASE_URL}/${u.image}` ||
-            defaultProfile1
+            `${import.meta.env.VITE_API_BASE_URL}/${u.image}` || defaultProfile1
           }
           className="inline-block object-cover object-center border-2 border-white rounded-full h-9 w-9 hover:z-10"
           data-tooltip-target="author-2"
@@ -73,27 +55,31 @@ function SectionCard({ section, onDeleteClick }) {
         </div>
         <div className="flex space-x-2">
           <Link
-            to={`/sections/${id}`} // Replace with the correct route for viewing a section
+            to={`/sections/${id}`}
             className="whitespace-normal break-words rounded-lg bg-gray-800 hover:bg-gray-700 active:bg-gray-900 py-1.5 px-3 font-['Roboto'] text-sm text-white focus:outline-none"
           >
             View
           </Link>
-          <Link
-            to={"/sections/update/" + id}
-            className="w-auto px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-lg shadow justify-center items-center gap-2 flex"
-          >
-            <div className="text-white text-xs font-bold font-['Roboto'] uppercase leading-[18px]">
-              Edit
-            </div>
-          </Link>
-          <button
-            onClick={() => onDeleteClick(section)}
-            className="w-auto px-3.5 py-2 bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow justify-center items-center gap-2 flex"
-          >
-            <div className="text-white text-xs font-bold font-['Roboto'] uppercase leading-[18px]">
-              Delete
-            </div>
-          </button>
+          {(role == 2 || (role == 1 && user.section_id == section.id)) && (
+            <>
+              <Link
+                to={`/sections/update/${id}`}
+                className="w-auto px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-lg shadow justify-center items-center gap-2 flex"
+              >
+                <div className="text-white text-xs font-bold font-['Roboto'] uppercase leading-[18px]">
+                  Edit
+                </div>
+              </Link>
+              <button
+                onClick={() => onDeleteClick(section)}
+                className="w-auto px-3.5 py-2 bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow justify-center items-center gap-2 flex"
+              >
+                <div className="text-white text-xs font-bold font-['Roboto'] uppercase leading-[18px]">
+                  Delete
+                </div>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

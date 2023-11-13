@@ -13,6 +13,11 @@ import SectionLayout from "../layouts/SectionLayout";
 import Section from "../views/sections/Section";
 import SectionForm from "../views/sections/SectionForm";
 import SectionShow from "../views/sections/SectionShow";
+import GuestLayout from "../layouts/GuestLayout";
+import Portfolio from "../views/guest/Portfolio";
+import PostForm from "../views/guest/PostForm";
+import Comments from "../views/guest/Comments";
+
 
 
 const routes = createBrowserRouter([
@@ -50,10 +55,7 @@ const routes = createBrowserRouter([
         path: "/",
         element: <Navigate to="/sections" />,
       },
-      {
-        path: "/sections",
-        element: <Section />,
-      },
+
       {
         path: "/sections/create",
         element: <SectionForm key="sectionCreate" />,
@@ -65,6 +67,36 @@ const routes = createBrowserRouter([
       {
         path: "/sections/:id",
         element: <SectionShow />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <GuestLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Navigate to="/portfolio/:id" />,
+      },
+      {
+        path: "/portfolio/:id",
+        element: <Portfolio />,
+      },
+      {
+        path: "/posts/create",
+        element: <PostForm key="postCreate" />,
+      },
+      {
+        path: "/posts/update/:id",
+        element: <PostForm key="postUpdate" />,
+      },
+      {
+        path: "/posts/comments/:id",
+        element: <Comments />,
+      },
+      {
+        path: "/sections",
+        element: <Section />,
       },
     ],
   },

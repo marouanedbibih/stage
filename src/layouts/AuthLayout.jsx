@@ -8,9 +8,9 @@ function AuthLayout() {
   
     if (token) {
       if (roleInt === 1) {
-        return <Navigate to="/portfolio" />;
+        return <Navigate to={`/portfolio/${user.id}`} />;
       } else if (roleInt === 0) {
-        return <Navigate to="/portfolio" />;
+        return <Navigate to={`/portfolio/${user.id}`}/>;
       }
       else if (roleInt === 2) {
         return <Navigate to="/users" />;

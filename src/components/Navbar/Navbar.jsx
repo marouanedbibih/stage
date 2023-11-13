@@ -21,7 +21,7 @@ function Navbar() {
     });
   };
   return (
-    <header className="h-20 px-16 bg-white shadow-md flex justify-end items-center fixed w-full">
+    <header className="h-20 px-16 bg-white shadow-md flex justify-end items-center fixed w-full z-10">
       <div className="flex items-center gap-8">
         <div className="flex items-center justify-between gap-4">
           <img

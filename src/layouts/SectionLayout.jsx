@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar/Navbar';
 function SectionLayout() {
     const { user, token, role, setUser, _setToken, _setRole, notification } = useStateContext();
     const roleInt = parseInt(role);
-    if (!token || roleInt !== 2) {
+    if (!token || (roleInt !== 1 && roleInt !== 2)) {
       return <Navigate to="/login" />;
     }
     return (
