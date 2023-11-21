@@ -19,4 +19,8 @@ class Section extends Model
         return $this->hasMany(User::class);
     }
 
+    public function article(){
+        return $this->hasMany(Artcile::class);
+    }
+
 }

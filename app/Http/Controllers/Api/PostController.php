@@ -16,6 +16,14 @@ class PostController extends Controller
     {
         $this->imageController = $imageController;
     }
+    public function getAllPostsWithUsers()
+    {
+        // Get all posts with user information, ordered by created_at in descending order and paginated
+        $posts = Post::with('user')->orderByDesc('created_at')->paginate(5);
+        // dd($posts);
+        // Return the posts with user information in the response
+        return response()->json(['posts' => $posts], 200);
+    }
     public function store(StorePostRequest $request)
     {
         // Validate the request
@@ -44,8 +52,6 @@ class PostController extends Controller
     
         return response(['post' => $post], 200);
     }
-
-
     public function update(UpdatePostRequest $request,Post $post){
         $data = $request->validated();
         $user = auth()->user();
@@ -72,7 +78,6 @@ class PostController extends Controller
             'post' => $post,
         ]);
     }
-
     public function show(Post $post){
         return response(['post'=>$post]);
     }

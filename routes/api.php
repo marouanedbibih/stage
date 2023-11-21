@@ -32,16 +32,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/is-like/{post}/posts', [LikeController::class, 'isPostLikedByUser']);
 
     Route::post('/comment/{post}/posts', [CommentController::class, 'addCommentToPost']);
-
-
-
-
 });
 
 Route::apiResource('/users',UserController::class);
 Route::apiResource('/sections',SectionController::class);
+
 Route::get('/getSectionForForm',[SectionController::class,'getSectionForForm']);
-Route::get('/users/search', [UserController::class, 'searchUsers']);
+// Route::get('/users/search', [UserController::class, 'searchUsers']);
 Route::post('/signup',[AuthController::class,'signup']);
 Route::post('/login',[AuthController::class,'login']);
 
@@ -55,6 +52,10 @@ Route::get('/posts/{post}/likes', [PostController::class, 'getLikesNumberOfPost'
 Route::get('/posts/{post}/nbrComments', [PostController::class, 'getCommentNumberOfPost']);
 
 Route::get('/posts/{post}/comments', [PostController::class, 'getCommentsWithUsers']);
+
+
+Route::get('/posts-with-users', [PostController::class, 'getAllPostsWithUsers']);
+
 
 
 
