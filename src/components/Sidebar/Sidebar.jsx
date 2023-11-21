@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { BiUser } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { GoOrganization } from "react-icons/go";
+import {AiFillHome} from "react-icons/ai";
 import { useStateContext } from "../../contexts/ContextProvider";
 import MenuLink from "../Link/MenuLink";
 
@@ -23,6 +24,12 @@ function Sidebar() {
           Dashboard
         </div>
       </div>
+      <MenuLink
+        route={`/home`}
+        label="Home"
+        icon={<AiFillHome color="white" />}
+        top_vl="40px"
+      />
       <MenuLink
         route={`/portfolio/${user.id}`}
         label="Portfolio"

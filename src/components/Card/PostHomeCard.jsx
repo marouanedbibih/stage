@@ -5,33 +5,34 @@ import axiosClient from "../../api/axios";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { BiSolidCommentDetail } from "react-icons/bi";
 
-function PostCard({ data, onDeleteClick }) {
+function PostHomeCard({post}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useStateContext();
-  const [nbrLikes, setNbrLikes] = useState(data.post.like_count);
-  const [nbrComments, setNbrComments] = useState(data.post.comment_count);
+  const [likes, setLikes] = useState(0);
+  const [nbrComments, setNbrComments] = useState(0);
   const [comment, setComment] = useState({
     comment: "",
   });
   const [isLike, setIsLike] = useState(false);
+  // console.log('User Id',post)
 
   useEffect(() => {
     setLoading(true);
     setError(null);
-    getNbrLikes();
+    getLikes();
     getNumbersComments();
     isPostLiked();
     setTimeout(() => {
       setLoading(false);
     }, 500);
-  }, []);
+  }, []); // Dependency array is empty, so it runs only once when the component mounts
 
-  const getNbrLikes = () => {
+  const getLikes = () => {
     axiosClient
-      .get(`/posts/${data.post.id}/likes`)
+      .get(`/posts/${post.id}/likes`)
       .then(({ data }) => {
-        setNbrLikes(data.likes);
+        setLikes(data.likes);
       })
       .catch((error) => {
         setError("Failed to fetch likes");
@@ -41,7 +42,7 @@ function PostCard({ data, onDeleteClick }) {
 
   const getNumbersComments = () => {
     axiosClient
-      .get(`/posts/${data.post.id}/nbrComments`)
+      .get(`/posts/${post.id}/nbrComments`)
       .then(({ data }) => {
         setNbrComments(data.nbrComments);
       })
@@ -53,9 +54,10 @@ function PostCard({ data, onDeleteClick }) {
 
   const isPostLiked = () => {
     axiosClient
-      .post(`is-like/${data.post.id}/posts`)
+      .post(`is-like/${post.id}/posts`)
       .then(({ data }) => {
         setIsLike(data.liked);
+        console.log("Is Liked", isLike);
       })
       .catch((error) => {
         setError("Failed to fetch likes");
@@ -65,9 +67,10 @@ function PostCard({ data, onDeleteClick }) {
 
   const likePost = () => {
     axiosClient
-      .post(`like/${data.post.id}/posts`)
+      .post(`like/${post.id}/posts`)
       .then(({ data }) => {
         setIsLike(true);
+        // console.log('Is Liked',isLike)
       })
       .catch((error) => {
         setError("Failed to fetch likes");
@@ -77,9 +80,10 @@ function PostCard({ data, onDeleteClick }) {
 
   const unlikePost = () => {
     axiosClient
-      .post(`unlike/${data.post.id}/posts`)
+      .post(`unlike/${post.id}/posts`)
       .then(({ data }) => {
         setIsLike(false);
+        // console.log('Is Liked',isLike)
       })
       .catch((error) => {
         setError("Failed to fetch likes");
@@ -90,18 +94,19 @@ function PostCard({ data, onDeleteClick }) {
   const onClick = () => {
     if (isLike == true) {
       unlikePost();
-      getNbrLikes();
+      getLikes();
     } else {
       likePost();
-      getNbrLikes();
+      getLikes();
     }
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
     console.log(comment);
+    // Add your logic to submit the comment
     axiosClient
-      .post(`comment/${data.post.id}/posts`, comment)
+      .post(`comment/${post.id}/posts`, comment)
       .then(({ data }) => {
         getNumbersComments();
         setComment({ comment: "" });
@@ -111,13 +116,7 @@ function PostCard({ data, onDeleteClick }) {
         console.error(error);
       });
   };
-
-
-
-
-
-
-
+//   console.log('Post Info',post)
   return (
     <div className="flex flex-col justify-end items-center">
       <div className="relative flex w-full max-w-[48rem] flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
@@ -126,44 +125,32 @@ function PostCard({ data, onDeleteClick }) {
             <p>Loading image...</p>
           ) : (
             <img
-              src={`${import.meta.env.VITE_API_BASE_URL}/${data.post.url_media}`}
+              src={`${import.meta.env.VITE_API_BASE_URL}/${post.url_media}`}
               alt="image"
               className="object-cover w-full h-full"
             />
           )}
         </div>
-        <div className="p-6 w-full">
+        <div className="p-6">
           <div className="flex flex-row w-full justify-between items-center">
-            <div className="w-1/2 flex flex-row justify-start items-center gap-4">
-              { data.post.user.id == user.id ? (
+            <div className="w-1/2 flex flex-row justify-end items-center gap-4">
+              {post.user_id == user.id ? (
                 <>
                   <Link
-                    to={`/posts/update/${data.post.id}`}
+                    to={`/posts/update/${post.id}`}
                     className="w-full px-3.5 py-2 bg-emerald-800 hover:bg-emerald-700 active:bg-emerald-900 rounded-lg shadow justify-center items-center gap-2 flex text-white text-xs font-bold font-['Roboto'] uppercase leading-[18px]"
                   >
                     Edit
                   </Link>{" "}
                   <button
-                    onClick={() => onDeleteClick(data.post.id)}
+                    onClick={() => onDeleteClick(post.id)}
                     className="w-full px-3.5 py-2 bg-red-800 hover:bg-red-700 active:bg-red-900 rounded-lg shadow justify-center items-center gap-2 flex text-white text-xs font-bold font-['Roboto'] uppercase leading-[18px]"
                   >
                     Delete
                   </button>{" "}
                 </>
               ) : (
-                <Link
-                to={`/profile/${data.post.user.id}`}
-                class="py-6 flex flex-row justify-start items-center gap-4">
-                  <img
-                    className="w-8 h-8 rounded-[40px]"
-                    src={`${import.meta.env.VITE_API_BASE_URL}/${
-                      data.post.user.image
-                    }`}
-                  />
-                  <h5 class="block  font-sans text-base antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                    {data.post.user.name}
-                  </h5>
-                </Link>
+""
               )}
             </div>
             <div className="flex flex-row justify-end items-center gap-2">
@@ -174,8 +161,8 @@ function PostCard({ data, onDeleteClick }) {
                   <AiOutlineLike size={24} color="black" />
                 )}
               </button>
-              <p>{nbrLikes}</p>
-              <Link to={`/posts/comments/${data.post.id}`}>
+              <p>{likes}</p>
+              <Link to={`/posts/comments/${post.id}`}>
                 <BiSolidCommentDetail size={24} color="black" />
               </Link>
               <p>{nbrComments}</p>
@@ -183,15 +170,15 @@ function PostCard({ data, onDeleteClick }) {
           </div>
 
           <h4 className="block my-2 font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            {loading ? "Loading title..." : data.post.title}
+            {loading ? "Loading title..." : post.title}
           </h4>
           <p className="block mb-8 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-            {loading ? "Loading description..." : data.post.description}
+            {loading ? "Loading description..." : post.description}
           </p>
         </div>
       </div>
       <form
-        className="w-3/4 flex flex-row justify-center items-center gap-4 mt-4"
+        className="w-full flex flex-row justify-center items-center gap-4 mt-4"
         onSubmit={onSubmit}
       >
         <input
@@ -213,4 +200,4 @@ function PostCard({ data, onDeleteClick }) {
   );
 }
 
-export default PostCard;
+export default PostHomeCard;

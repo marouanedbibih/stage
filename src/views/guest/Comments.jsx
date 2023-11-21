@@ -17,6 +17,8 @@ function Comments() {
     getComments();
   }, [id]);
 
+  console.log("Comments Post",post.user)
+
   const getPost = () => {
     setLoading(true);
     setError(null);
@@ -24,6 +26,7 @@ function Comments() {
     axiosClient
       .get(`/posts/${id}`)
       .then(({ data }) => {
+        console.log('Post API',data.post)
         setPost(data.post);
       })
       .catch((error) => {
@@ -65,14 +68,18 @@ function Comments() {
       });
   };
 
+
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="flex flex-col justify-center items-center w-1/2">
-      <PostCard key={post.id} post={post} onDeleteClick={onDeleteClick} />
+      {post && post.id && (
+          <PostCard key={post.id} post={post} onDeleteClick={onDeleteClick} />
+        )}
 
-      {comments.map(comment => (
-        <CommentCard key={comment.id} comment={comment} getComments={getComments} />
-      ))}
+        {comments.map((comment) => (
+          <CommentCard key={comment.id} comment={comment} getComments={getComments} />
+        ))}
       </div>
 
     </div>

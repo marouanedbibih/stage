@@ -17,6 +17,8 @@ import GuestLayout from "../layouts/GuestLayout";
 import Portfolio from "../views/guest/Portfolio";
 import PostForm from "../views/guest/PostForm";
 import Comments from "../views/guest/Comments";
+import Profile from "../views/guest/Profile";
+import Home from "../views/guest/Home";
 
 
 
@@ -64,10 +66,7 @@ const routes = createBrowserRouter([
         path: "/sections/update/:id",
         element: <SectionForm key="sectionUpdate" />,
       },
-      {
-        path: "/sections/:id",
-        element: <SectionShow />,
-      },
+
     ],
   },
   {
@@ -97,6 +96,18 @@ const routes = createBrowserRouter([
       {
         path: "/sections",
         element: <Section />,
+      },
+      {
+        path: "/sections/:id",
+        element: <SectionShow />,
+      },
+      {
+        path: "/profile/:id",
+        element: <Profile />,
+      },
+      {
+        path: "/home",
+        element: <Home />,
       },
     ],
   },
