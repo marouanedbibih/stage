@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->integer('role')->default(0);
             $table->string('image')->default('images/users/default-profile.png');
-            $table->unsignedBigInteger('section_id');
-            $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
+            // $table->unsignedBigInteger('section_id');
+            // $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

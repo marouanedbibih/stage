@@ -18,44 +18,24 @@ class PostController extends Controller
     }
     public function getAllPostsWithUsers()
     {
-        // Get all posts with user information, ordered by created_at in descending order and paginated
-        $posts = Post::with('user')->orderByDesc('created_at')->paginate(5);
-        // dd($posts);
-        // Return the posts with user information in the response
+        // Get all posts with user information, comments, and likes
+        $posts = Post::with('user')
+            ->withCount('comment', 'like') // Add counts for comments and likes
+            ->orderByDesc('created_at')
+            ->paginate(5);
+
+        // Return the posts with user information, comment count, and like count in the response
         return response()->json(['posts' => $posts], 200);
     }
+
     public function store(StorePostRequest $request)
     {
         // Validate the request
         $data = $request->validated();
-    
+
         // Check if the user is authenticated
         $user = auth()->user();
-    
-        if (!$user) {
-            // If the user is not authenticated, you might want to return an error response or handle it accordingly.
-            return response(['error' => 'User not authenticated'], 401);
-        }
-    
-        if (isset($data['file'])) {
-            $relativePath = $this->imageController->uploadImage($data['file'], 'posts/', '-post');
-            $data['url_media'] = $relativePath;
-            unset($data['file']); // Remove the 'file' key as it's no longer needed
-        }
-    
-        $post = Post::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'url_media' => $data['url_media'], // Use the updated key
-            'user_id' => $user->id
-        ]);
-    
-        return response(['post' => $post], 200);
-    }
-    public function update(UpdatePostRequest $request,Post $post){
-        $data = $request->validated();
-        $user = auth()->user();
-    
+
         if (!$user) {
             // If the user is not authenticated, you might want to return an error response or handle it accordingly.
             return response(['error' => 'User not authenticated'], 401);
@@ -64,9 +44,34 @@ class PostController extends Controller
         if (isset($data['file'])) {
             $relativePath = $this->imageController->uploadImage($data['file'], 'posts/', '-post');
             $data['url_media'] = $relativePath;
-            unset($data['file']); 
+            unset($data['file']); // Remove the 'file' key as it's no longer needed
+        }
+
+        $post = Post::create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'url_media' => $data['url_media'], // Use the updated key
+            'user_id' => $user->id
+        ]);
+
+        return response(['post' => $post], 200);
+    }
+    public function update(UpdatePostRequest $request, Post $post)
+    {
+        $data = $request->validated();
+        $user = auth()->user();
+
+        if (!$user) {
+            // If the user is not authenticated, you might want to return an error response or handle it accordingly.
+            return response(['error' => 'User not authenticated'], 401);
+        }
+
+        if (isset($data['file'])) {
+            $relativePath = $this->imageController->uploadImage($data['file'], 'posts/', '-post');
+            $data['url_media'] = $relativePath;
+            unset($data['file']);
             $this->imageController->removeImage($post->url_media);
-        }else{
+        } else {
             $data['url_media'] = $post->url_media;
         }
 
@@ -78,16 +83,18 @@ class PostController extends Controller
             'post' => $post,
         ]);
     }
-    public function show(Post $post){
-        return response(['post'=>$post]);
+    public function show(Post $post)
+    {
+        return response(['post' => $post]);
     }
 
-    public function destroy(Post $post){
+    public function destroy(Post $post)
+    {
 
         $this->imageController->removeImage($post->url_media);
 
         $post->delete();
-    
+
         return response([
             "message" => "Post delete succufuly"
         ], 204);
@@ -120,20 +127,18 @@ class PostController extends Controller
         // Return the number of likes in the response
         return response()->json(['nbrComments' => $numberOfComments], 200);
     }
-    
+
     public function getCommentsWithUsers(Post $post)
     {
         if (!$post) {
             // If the post is not found, return an error response
             return response()->json(['error' => 'Post not found'], 404);
         }
-    
+
         // Get all comments for the post with user information in descending order
         $comments = $post->comment()->with('user')->orderBy('created_at', 'desc')->get();
-    
+
         // Return the comments with user information in the response
         return response()->json(['comments' => $comments], 200);
     }
-    
-    
 }

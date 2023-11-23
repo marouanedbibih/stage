@@ -46,7 +46,7 @@ class UpdateUserRequest extends FormRequest
                     ->symbols()
             ],
             'role' => 'required|in:0,1,2',
-            'section_id' => 'required|integer|exists:sections,id',
+            // 'section_id' => 'required|integer|exists:sections,id',
             'image' => 'nullable|string',
         ];
     }

@@ -22,15 +22,14 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $section = Section::inRandomOrder()->first();
+        
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'role' => $this->faker->randomElement([0, 1,2]), 
+            'role' => $this->faker->randomElement([0,1]), 
             'image'=> 'images/users/default-profile.png',
-            'section_id' => $section->id,
             'remember_token' => Str::random(10),
         ];
     }

@@ -20,9 +20,7 @@ class AuthController extends Controller
         }
     
         $data['image'] = 'images/users/default-profile.png';
-        $data['role'] = 0;
-        $data['section_id'] = 1;
-    
+        $data['role'] = 0;    
         $user = User::create($data);
     
         $token = $user->createToken('main')->plainTextToken;

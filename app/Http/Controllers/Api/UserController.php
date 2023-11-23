@@ -20,13 +20,10 @@ class UserController extends Controller
     {
         $this->imageController = $imageController;
     }
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $users = DB::table('users')
-            ->leftJoin('sections', 'users.section_id', '=', 'sections.id')
+            // ->leftJoin('sections', 'users.section_id', '=', 'sections.id')
             ->select(
                 'users.id',
                 'users.name',
@@ -34,18 +31,12 @@ class UserController extends Controller
                 'users.image',
                 'users.role',
                 'users.created_at',
-                'sections.id as section_id',
-                'sections.name as section_name',
             )
             ->orderBy('users.created_at', 'desc')
             ->paginate(7);
 
         return UserResource::collection($users);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUserRequest $request)
     {
         $data = $request->validated();
@@ -62,36 +53,28 @@ class UserController extends Controller
             'user' => new UserResource($user),
         ]);
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(User $user)
     {
         // Eager load the 'section' relationship to avoid N+1 queries
-        $user = User::with('section')->find($user->id);
+        // $user = User::with('section')->find($user->id);
 
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
-        }
+        // if (!$user) {
+        //     return response()->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        // }
 
-        $userInfo = [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role,
-            'image' => $user->image,
-            'created_at' => $user->created_at,
-            'section_id' => $user->section_id,
-            'section_name' => $user->section->name,
-        ];
+        // $userInfo = [
+        //     'id' => $user->id,
+        //     'name' => $user->name,
+        //     'email' => $user->email,
+        //     'role' => $user->role,
+        //     'image' => $user->image,
+        //     'created_at' => $user->created_at,
+        //     'section_id' => $user->section_id,
+        //     'section_name' => $user->section->name,
+        // ];
 
-        return response()->json(['user' => $userInfo], Response::HTTP_OK);
+        return response()->json(['user' => new UserResource($user)], Response::HTTP_OK);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
@@ -122,10 +105,6 @@ class UserController extends Controller
             'user' => new UserResource($user),
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $user)
     {
         if ($user->image !== 'images/users/default-profile.png') {
@@ -138,36 +117,6 @@ class UserController extends Controller
             "message" => "user delete succufuly"
         ], 204);
     }
-
-    public function searchUsers(Request $request)
-    {
-        $searchTerm = $request->input('searchTerm');
-
-        $users = DB::table('users')
-            ->leftJoin('sections', 'users.section_id', '=', 'sections.id')
-            ->select(
-                'users.id',
-                'users.name',
-                'users.email',
-                'users.role',
-                'users.created_at',
-                'sections.name as section_name',
-                'sections.id as section_id'
-            )
-            ->where(function ($query) use ($searchTerm) {
-                $query->where('users.name', 'like', "%$searchTerm%")
-                    ->orWhere('users.email', 'like', "%$searchTerm%")
-                    ->orWhere('sections.name', 'like', "%$searchTerm%");
-            })
-            ->orderBy('users.id', 'desc')
-            ->paginate(7);
-
-        return response()->json([
-            'message' => 'Users retrieved successfully',
-            'users' => UserResource::collection($users),
-        ], 200);
-    }
-
 
     public function getPostsUser(User $user)
     {

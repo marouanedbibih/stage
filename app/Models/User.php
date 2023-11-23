@@ -23,7 +23,6 @@ class User extends Authenticatable
         'password',
         'role',
         'image',
-        'section_id'
     ];
 
     /**
@@ -46,9 +45,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function section(){
-        return $this->belongsTo(Section::class);
-    }
 
     public function post(){
         return $this->hasMany(Post::class);
