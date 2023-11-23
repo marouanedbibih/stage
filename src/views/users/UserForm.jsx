@@ -20,8 +20,6 @@ export default function UserForm() {
   const [errors, setErrors] = useState(null);
   const { setNotification } = useStateContext();
   const [loading, setLoading] = useState(false);
-  const [sections, setSections] = useState([]);
-
   const onImageChoose = (ev) => {
     const file = ev.target.files[0];
     const reader = new FileReader();
@@ -37,15 +35,6 @@ export default function UserForm() {
   };
 
   useEffect(() => {
-    axiosClient
-      .get("/getSectionForForm")
-      .then(({ data }) => {
-        setSections(data.sections || []); // Ensure sections is an array
-      })
-      .catch((error) => {
-        console.error("Error fetching sections:", error);
-      });
-
     if (id) {
       setLoading(true);
       axiosClient
@@ -54,7 +43,6 @@ export default function UserForm() {
           setLoading(false);
           setUser(data.user);
           console.log(data);
-          // console.log('Users',data.data);
         })
         .catch(() => {
           setLoading(false);
@@ -130,41 +118,24 @@ export default function UserForm() {
                 value={user.email}
                 onChange={(ev) => setUser({ ...user, email: ev.target.value })}
                 placeholder="Email"
-                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-purple"
+                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-gray-800"
               />
               <select
                 value={user.role}
                 onChange={(ev) => setUser({ ...user, role: ev.target.value })}
-                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-purple"
+                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-gray-800"
               >
                 <option value="">Select Role</option>
                 <option value="0">Membre</option>
-                <option value="1">Responsable</option>
-                <option value="2">Admin</option>
+                <option value="1">Admin</option>
               </select>
-
-              <select
-                value={user.section_id}
-                onChange={(ev) =>
-                  setUser({ ...user, section_id: ev.target.value })
-                }
-                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-purple"
-              >
-                <option value="">Select Section</option>
-                {sections.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-
               <input
                 type="password"
                 onChange={(ev) =>
                   setUser({ ...user, password: ev.target.value })
                 }
                 placeholder="Password"
-                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-purple"
+                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-gray-800"
               />
               <input
                 type="password"
@@ -172,10 +143,9 @@ export default function UserForm() {
                   setUser({ ...user, password_confirmation: ev.target.value })
                 }
                 placeholder="Password Confirmation"
-                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-purple"
+                className="outline-none bg-white w-full border-2 border-gray-300 mb-[15px] px-[15px] py-[15px] box-border text-[14px] transition duration-300 rounded-[16px] focus:border-gray-800"
               />
             </div>
-
             <div className="flex justify-center items-center">
               <label for="profile-image" class="file-input-label">
                 <div class="relative w-[360px] h-[360] rounded-full overflow-hidden border-2 border-gray-300 bg-white">

@@ -36,13 +36,7 @@ function Sidebar() {
         icon={<BiUser color="white" />}
         top_vl="40px"
       />
-      <MenuLink
-        route="/sections"
-        label="Sections"
-        icon={<GoOrganization color="white" />}
-        top_vl="40px"
-      />
-      {roleInt === 2 && (
+      {roleInt === 1 && (
         <div>
           <MenuLink
             route="/users"

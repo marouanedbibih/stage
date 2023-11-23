@@ -7,7 +7,7 @@ import { Navigate, Outlet } from "react-router-dom";
 function UsersLayout() {
   const { user, token, role, setUser, _setToken, _setRole, notification } = useStateContext();
   const roleInt = parseInt(role);
-  if (!token || roleInt !== 2) {
+  if (!token || roleInt !== 1) {
     return <Navigate to="/login" />;
   }
   return (

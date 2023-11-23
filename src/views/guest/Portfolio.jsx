@@ -72,7 +72,7 @@ function Portfolio() {
       {!loading &&
         !error &&
         datas.map((data) => (
-          <PostCard key={data.post.id} data={data}  onDeleteClick={onDeleteClick} />
+          <PostCard key={data.post.id} data={data}   onDeleteClick={onDeleteClick} />
         ))}
       </div>
 

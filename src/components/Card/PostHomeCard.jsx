@@ -15,7 +15,6 @@ function PostHomeCard({post}) {
     comment: "",
   });
   const [isLike, setIsLike] = useState(false);
-  // console.log('User Id',post)
 
   useEffect(() => {
     setLoading(true);
@@ -26,7 +25,7 @@ function PostHomeCard({post}) {
     setTimeout(() => {
       setLoading(false);
     }, 500);
-  }, []); // Dependency array is empty, so it runs only once when the component mounts
+  }, []); 
 
   const getLikes = () => {
     axiosClient

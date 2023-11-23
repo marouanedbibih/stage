@@ -19,8 +19,6 @@ function PostCard({ data, onDeleteClick }) {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    getNbrLikes();
-    getNumbersComments();
     isPostLiked();
     setTimeout(() => {
       setLoading(false);

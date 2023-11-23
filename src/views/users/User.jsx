@@ -12,8 +12,6 @@ function User() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const carouselPages = 5;
-  const [searchTerm, setSearchTerm] = useState("");
-
 
   useEffect(() => {
     getUsers(currentPage);
@@ -24,7 +22,6 @@ function User() {
     axiosClient
       .get(`/users?page=${page}`)
       .then(({ data }) => {
-        console.log(data)
         setLoading(false);
         setUsers(data.data);
         setTotalPages(data.meta.last_page);
@@ -59,7 +56,6 @@ function User() {
     axiosClient
       .delete(`/users/${user.id}`)
       .then(() => {
-        // displayNotification("User was successfully deleted");
         getUsers(currentPage);
       })
       .catch((error) => {
@@ -74,9 +70,6 @@ function User() {
         className="grid grid-cols-1 justify-items-center mb-8 "
         id="user-list"
       >
-        <UserSearch/>
-
-        {/* Table of Users */}
         <UserListTable
           users={users}
           loading={loading}

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import axiosClient from "../../api/axios";
 import PostCard from "../../components/Card/PostCard";
 import PostHomeCard from "../../components/Card/PostHomeCard";
+import HomePostsCard from "../../components/Card/HomePostsCard";
 
 var c = true;
 
@@ -10,16 +11,16 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [request, setRequest] = useState(true);
-  const getPosts = useCallback(() => {
-    // console.log("Test",c);
 
-    // c =false;
+
+  const getPosts = useCallback(() => {
     if (request == true) {
       setLoading(true);
       setRequest(false);
       axiosClient
         .get(`posts-with-users?page=${page}`)
         .then(({ data }) => {
+          console.log("Data Response",data);
           setPosts((prevPosts) => {
             const newPosts = data.posts.data.filter((newPost) => {
               return !prevPosts.some((prevPost) => prevPost.id === newPost.id);
@@ -65,8 +66,9 @@ function Home() {
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="w-1/2 flex flex-col gap-4">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+        {posts.map((data) => (
+          <HomePostsCard key={data.id} data={data} />
+          // console.log("Post Home Card",data)
         ))}
         {loading && <p>Loading more posts...</p>}
       </div>
