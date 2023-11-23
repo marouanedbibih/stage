@@ -19,8 +19,6 @@ function HomePostsCard({data}) {
     useEffect(() => {
       setLoading(true);
       setError(null);
-    //   getNbrLikes();
-    //   getNumbersComments();
       isPostLiked();
       setTimeout(() => {
         setLoading(false);
@@ -111,10 +109,7 @@ function HomePostsCard({data}) {
           console.error(error);
         });
     };
-  
-  
-  
-
+    
     return (
       <div className="flex flex-col justify-end items-center">
         <div className="relative flex w-full max-w-[48rem] flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">

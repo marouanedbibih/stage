@@ -14,7 +14,6 @@ import UserForm from "../views/users/UserForm";
 import Portfolio from "../views/guest/Portfolio";
 import PostForm from "../views/guest/PostForm";
 import Comments from "../views/guest/Comments";
-import Profile from "../views/guest/Profile";
 import Home from "../views/guest/Home";
 
 
@@ -65,10 +64,6 @@ const routes = createBrowserRouter([
       {
         path: "/posts/comments/:id",
         element: <Comments />,
-      },
-      {
-        path: "/profile/:id",
-        element: <Profile />,
       },
       {
         path: "/home",

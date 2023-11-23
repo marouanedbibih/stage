@@ -4,7 +4,6 @@ import PostCard from "../../components/Card/PostCard";
 import PostHomeCard from "../../components/Card/PostHomeCard";
 import HomePostsCard from "../../components/Card/HomePostsCard";
 
-var c = true;
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -18,7 +17,7 @@ function Home() {
       setLoading(true);
       setRequest(false);
       axiosClient
-        .get(`posts-with-users?page=${page}`)
+        .get(`getAllPostsWithUser?page=${page}`)
         .then(({ data }) => {
           console.log("Data Response",data);
           setPosts((prevPosts) => {
