@@ -85,8 +85,21 @@ class PostController extends Controller
     }
     public function show(Post $post)
     {
-        return response(['post' => $post]);
+        $user = $post->user; // Retrieve user information associated with the post
+        $likesCount = $post->like()->count(); // Count the number of likes for the post
+        $commentsCount = $post->comment()->count(); // Count the number of comments for the post
+    
+        $data = [
+            'post' => $post,
+            'likes_count' => $likesCount,
+            'comments_count' => $commentsCount,
+            'user' => $user,
+
+        ];
+    
+        return response(['data' => $data]);
     }
+    
 
     public function destroy(Post $post)
     {
