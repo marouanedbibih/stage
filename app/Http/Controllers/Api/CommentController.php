@@ -17,10 +17,8 @@ class CommentController extends Controller
             'comment' => 'required|string',
         ]);
     
-        // Get the authenticated user using the auth helper function
         $user = auth()->user();
     
-        // Create a new comment
         $comment = Comment::create([
             'comment' => $data['comment'],
             'user_id' => $user->id,

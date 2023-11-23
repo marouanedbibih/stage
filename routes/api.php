@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::apiResource('/users',UserController::class);
+    Route::apiResource('/users', UserController::class);
 });
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -28,32 +29,31 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::apiResource('posts',PostController::class);
-
+    // api for users
     Route::get('/users/{user}/posts', [UserController::class, 'getPostsUser']);
 
+    // api for PostController
+    Route::apiResource('posts', PostController::class);
+    Route::get('/posts/{post}/likes', [PostController::class, 'getLikesNumberOfPost']);
+    Route::get('/posts/{post}/nbrComments', [PostController::class, 'getCommentNumberOfPost']);
+
+    // api for LikeController
     Route::post('/like/{post}/posts', [LikeController::class, 'likePost']);
     Route::post('/unlike/{post}/posts', [LikeController::class, 'unlikePost']);
     Route::post('/is-like/{post}/posts', [LikeController::class, 'isPostLikedByUser']);
+
+    // api for PostController
     Route::post('/comment/{post}/posts', [CommentController::class, 'addCommentToPost']);
 });
 
-Route::post('/signup',[AuthController::class,'signup']);
-Route::post('/login',[AuthController::class,'login']);
+// api for AuthController
+Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/login', [AuthController::class, 'login']);
 
 
 
-Route::get('/posts/{post}/likes', [PostController::class, 'getLikesNumberOfPost']);
-Route::get('/posts/{post}/nbrComments', [PostController::class, 'getCommentNumberOfPost']);
+
 
 Route::get('/posts/{post}/comments', [PostController::class, 'getCommentsWithUsers']);
 
-
 Route::get('/posts-with-users', [PostController::class, 'getAllPostsWithUsers']);
-
-
-
-
-
-
-
