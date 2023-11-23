@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('posts', PostController::class);
     Route::get('/posts/{post}/likes', [PostController::class, 'getLikesNumberOfPost']);
     Route::get('/posts/{post}/nbrComments', [PostController::class, 'getCommentNumberOfPost']);
+    Route::get('/getAllPostsWithUser', [PostController::class, 'getAllPostsWithUser']);
 
     // api for LikeController
     Route::post('/like/{post}/posts', [LikeController::class, 'likePost']);
@@ -56,4 +57,4 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/posts/{post}/comments', [PostController::class, 'getCommentsWithUsers']);
 
-Route::get('/posts-with-users', [PostController::class, 'getAllPostsWithUsers']);
+

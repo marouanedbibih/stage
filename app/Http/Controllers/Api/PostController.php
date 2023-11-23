@@ -16,7 +16,7 @@ class PostController extends Controller
     {
         $this->imageController = $imageController;
     }
-    public function getAllPostsWithUsers()
+    public function getAllPostsWithUser()
     {
         // Get all posts with user information, comments, and likes
         $posts = Post::with('user')
