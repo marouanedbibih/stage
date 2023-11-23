@@ -3,12 +3,15 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../../api/axios";
 import PostCard from "../../components/Card/PostCard";
 import CommentCard from "../../components/Card/CommentCard";
+import PostComments from "../../components/Card/PostComments";
 
 function Comments() {
   const [post, setPost] = useState({});
+  const [nbrLikes, setNbrLikes] = useState();
+  const [nbrComments, setNbrComments] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [comments, setComments] = useState([]); // Initialize with an empty array
+  const [comments, setComments] = useState([]); 
 
   let { id } = useParams();
 
@@ -17,8 +20,6 @@ function Comments() {
     getComments();
   }, [id]);
 
-  console.log("Comments Post",post.user)
-
   const getPost = () => {
     setLoading(true);
     setError(null);
@@ -26,8 +27,12 @@ function Comments() {
     axiosClient
       .get(`/posts/${id}`)
       .then(({ data }) => {
-        console.log('Post API',data.post)
-        setPost(data.post);
+        // console.log("Data",data.data.likes_count)
+        setPost(data.data.post);
+        setNbrLikes(data.data.likes_count);
+        setNbrComments(data.data.comments_count);
+        // console.log("Nbr Comments",nbrComments);
+
       })
       .catch((error) => {
         setError(error.message || "An error occurred while fetching posts.");
@@ -68,20 +73,23 @@ function Comments() {
       });
   };
 
-
+  
 
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="flex flex-col justify-center items-center w-1/2">
-      {post && post.id && (
-          <PostCard key={post.id} post={post} onDeleteClick={onDeleteClick} />
+        {post && post.id && (
+          <PostComments key={post.id} post={post} nbrLikes={nbrLikes} nbrComments={nbrComments} onDeleteClick={onDeleteClick} />
         )}
 
         {comments.map((comment) => (
-          <CommentCard key={comment.id} comment={comment} getComments={getComments} />
+          <CommentCard
+            key={comment.id}
+            comment={comment}
+            getComments={getComments}
+          />
         ))}
       </div>
-
     </div>
   );
 }
