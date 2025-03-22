@@ -38,11 +38,17 @@ class StoreUserRequest extends FormRequest
                     ->symbols()
             ],
             'role' => 'required|in:0,1,2',
+<<<<<<< HEAD
             'section_id' => 'required|integer|exists:sections,id',
             'image' => 'nullable|string',
         ];
 
         
+=======
+            // 'section_id' => 'required|integer|exists:sections,id',
+            'image' => 'nullable|string',
+        ];
+>>>>>>> back
     }
 
             // Handle validation errors

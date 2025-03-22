@@ -19,7 +19,11 @@ class ImageController extends Controller
             $type = strtolower($type[1]); // jpg, png, gif
 
             // Check if file is an image
+<<<<<<< HEAD
             if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+=======
+            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png','avif','webp'])) {
+>>>>>>> back
                 throw new \Exception('invalid image type');
             }
             $image = str_replace(' ', '+', $image);

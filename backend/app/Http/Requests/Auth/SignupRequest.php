@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rules\Password;
 
-class UpdateUserRequest extends FormRequest
+
+class SignupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,19 +25,11 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user');
-
         return [
             'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($userId), 
-            ],
+            'email' => 'required|string|email|unique:users|max:255',
             'password' => [
-                'nullable', 
+                'required',
                 'string',
                 'confirmed',
                 Password::min(8)
@@ -45,13 +37,6 @@ class UpdateUserRequest extends FormRequest
                     ->numbers()
                     ->symbols()
             ],
-            'role' => 'required|in:0,1,2',
-<<<<<<< HEAD
-            'section_id' => 'required|integer|exists:sections,id',
-=======
-            // 'section_id' => 'required|integer|exists:sections,id',
->>>>>>> back
-            'image' => 'nullable|string',
         ];
     }
 

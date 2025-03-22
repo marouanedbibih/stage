@@ -21,8 +21,8 @@ class UserResource extends JsonResource
             'image' => $this->image,
             'role' => $this->role,
             'created_at' => $this->created_at,
-            'section_id' => $this->section_id,
-            'section_name' => $this->section_name
+            // 'section_id' => $this->section_id,
+            // 'section_name' => $this->section_name
         ];
     }
 }
